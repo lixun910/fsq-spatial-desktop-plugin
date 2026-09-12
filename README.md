@@ -21,8 +21,19 @@ registers the MCP server at `http://127.0.0.1:7750/mcp`.
 
 ## Codex
 
-Codex reads skills from `$HOME/.agents/skills`, and a skill's `agents/openai.yaml`
-can declare an MCP dependency for Codex to wire up. Install both files:
+Codex installs skills with its built-in `$skill-installer` — point it at this
+repo's skill directory, in a Codex session:
+
+```
+$skill-installer install https://github.com/lixun910/fsq-spatial-desktop-plugin/tree/main/.agents/skills/fsq-spatial-desktop
+```
+
+That copies the skill **and** its `agents/openai.yaml`, which declares the MCP
+dependency at `http://127.0.0.1:7750/mcp` — so Codex wires the server up itself.
+Restart Codex afterwards. (The installer aborts if the skill is already
+installed; remove the existing skill directory first to reinstall.)
+
+If `$skill-installer` isn't available, copy the two files by hand:
 
 ```bash
 curl -fsSL --create-dirs -o ~/.agents/skills/fsq-spatial-desktop/SKILL.md https://raw.githubusercontent.com/lixun910/fsq-spatial-desktop-plugin/main/.agents/skills/fsq-spatial-desktop/SKILL.md
@@ -32,7 +43,8 @@ curl -fsSL --create-dirs -o ~/.agents/skills/fsq-spatial-desktop/SKILL.md https:
 curl -fsSL --create-dirs -o ~/.agents/skills/fsq-spatial-desktop/agents/openai.yaml https://raw.githubusercontent.com/lixun910/fsq-spatial-desktop-plugin/main/.agents/skills/fsq-spatial-desktop/agents/openai.yaml
 ```
 
-If Codex doesn't wire the server from the declared dependency, add it directly:
+And if Codex still doesn't register the server from the declared dependency, add
+it directly:
 
 ```bash
 codex mcp add fsq-spatial-desktop --url http://127.0.0.1:7750/mcp
