@@ -164,7 +164,7 @@ claude mcp add --transport http fsq-spatial-desktop http://127.0.0.1:7750/mcp
 ```
 
 ```bash
-codex mcp add fsq-spatial-desktop http://127.0.0.1:7750/mcp
+codex mcp add fsq-spatial-desktop --url http://127.0.0.1:7750/mcp
 ```
 
 Use the real URL from Step 4. Then **tell the user to restart the client** (Codex

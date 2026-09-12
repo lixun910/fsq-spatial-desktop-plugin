@@ -1,0 +1,11 @@
+interface:
+  display_name: "FSQ Spatial Desktop"
+  short_description: "Install, launch, and connect FSQ Spatial Desktop over MCP"
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "fsq-spatial-desktop"
+      description: "FSQ Spatial Desktop local MCP server - DuckDB SQL and Kepler.gl maps"
+      transport: "streamable_http"
+      url: "http://127.0.0.1:7750/mcp"
