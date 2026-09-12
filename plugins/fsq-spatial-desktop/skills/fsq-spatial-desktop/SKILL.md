@@ -103,17 +103,17 @@ mkdir -p ~/.local/bin && mv FSQ-Spatial-*-x86_64.AppImage ~/.local/bin/fsq-spati
 
 ## Step 3 — Launch the app
 
-Starting the app also starts its MCP server (it binds a port in **7750–7759**) —
-it does **not** need a project to be open first. Launch it and give it a few
-seconds:
+Starting the app also starts its MCP server — it does **not** need a project to be
+open first. Pin the port to `7750` so the URL is deterministic (this is the port
+the client registration in Step 5 expects), then launch and give it a few seconds:
 
 ```bash
 # macOS
-open -a "FSQ Spatial Desktop"
+open -a "FSQ Spatial Desktop" --env FSQ_MCP_PORT=7750
 # Linux
-~/.local/bin/fsq-spatial-desktop &
-# Windows
-& "$env:LOCALAPPDATA\Programs\FSQ Spatial Desktop\FSQ Spatial Desktop.exe"
+FSQ_MCP_PORT=7750 ~/.local/bin/fsq-spatial-desktop &
+# Windows (PowerShell)
+$env:FSQ_MCP_PORT=7750; & "$env:LOCALAPPDATA\Programs\FSQ Spatial Desktop\FSQ Spatial Desktop.exe"
 ```
 
 **First run shows a sign-in screen.** Tell the user to sign in in the app window
@@ -131,10 +131,11 @@ done
 cat ~/.fsq-spatial/mcp.json 2>/dev/null || echo "discovery file not written yet"
 ```
 
-## Step 4 — Find the MCP URL
+## Step 4 — Confirm the MCP URL
 
-The app writes `~/.fsq-spatial/mcp.json` on bind, containing `{url, port}`. Use
-that URL. If the file is missing, probe the default range:
+Pinned in Step 3, the URL is `http://127.0.0.1:7750/mcp`. The app records the
+port it actually bound in `~/.fsq-spatial/mcp.json`; read it to confirm (and to
+pick up a different port if 7750 was somehow already taken):
 
 ```bash
 for p in $(seq 7750 7759); do
@@ -156,8 +157,8 @@ curl -s -X POST -H 'content-type: application/json' \
 
 ## Step 5 — Register with this client
 
-Register the discovered URL (no `?project=` param — the agent creates a project
-itself in Step 6):
+Register the pinned URL — `http://127.0.0.1:7750/mcp` (or the real port from
+Step 4). No `?project=` param: the agent creates a project itself in Step 6.
 
 ```bash
 claude mcp add --transport http fsq-spatial-desktop http://127.0.0.1:7750/mcp
@@ -190,9 +191,11 @@ Once the `fsq-spatial-desktop` tools are available:
 
 ## Notes
 
-- **Ports:** the server prefers 7750 and falls back through 7759 if a port is
-  taken. Pin it with `FSQ_MCP_PORT` if you need a fixed URL. The discovery file
-  always records the port actually bound.
+- **Port:** Step 3 pins `FSQ_MCP_PORT=7750`, which is strict — if 7750 is already
+  taken (e.g. another FSQ Spatial Desktop instance is running), the MCP server
+  won't start. Close the other instance, or use
+  `FSQ_MCP_PORT_RANGE="7750-7759"` to allow a fallback; the discovery file always
+  records the port actually bound.
 - **Auth:** the MCP listener is loopback-only (127.0.0.1) with no token — the
   manual sign-in in Step 3 is the gate. Anyone with local access to the machine
   can drive the app while it is running and MCP is on; the user can turn MCP off

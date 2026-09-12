@@ -70,9 +70,11 @@ install.sh                                     installs the skill + MCP for both
 
 ## Notes
 
-- **Port:** the app prefers `7750` and falls back through `7751–7759` if that port
-  is taken. The manifest pins `7750`. If your app bound a different port, register
-  the URL from `~/.fsq-spatial/mcp.json` (or pin it with `FSQ_MCP_PORT=7750`).
+- **Port:** the manifests pin `7750`, and the skill launches the app with
+  `FSQ_MCP_PORT=7750` so that is correct by construction. That setting is strict —
+  if `7750` is already taken the MCP server won't start; use
+  `FSQ_MCP_PORT_RANGE="7750-7759"` to allow a fallback, and read the port actually
+  bound from `~/.fsq-spatial/mcp.json`.
 - **Updating:** bump `version` in both
   `plugins/fsq-spatial-desktop/.claude-plugin/plugin.json` and
   `plugins/fsq-spatial-desktop/plugin.json`, then users run
