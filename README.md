@@ -1,11 +1,10 @@
-# FSQ Spatial Desktop — agent plugin & skill
+# FSQ Spatial Desktop — agent skill
 
-Bootstrap for **FSQ Spatial Desktop**: installs and launches the app, connects its
-local MCP server, and gives the agent the app's geospatial tools (DuckDB SQL +
-Kepler.gl maps).
+Bootstrap skill for **FSQ Spatial Desktop**: it downloads and launches the app
+and gives the agent the app's geospatial tools (DuckDB SQL + Kepler.gl maps).
 
-One tree ships three forms: a **Claude Code plugin** (via a marketplace), a
-portable **Agent Plugin** (`plugin.json` + `mcp.json`, the cross-vendor format
+The skill is published in the formats clients load: a **Claude Code plugin**
+(via a marketplace), a portable **Agent Plugin** (the cross-vendor format
 Codex/ChatGPT read), and a plain **agent skill** for clients with no plugin
 loader.
 
@@ -16,8 +15,7 @@ claude plugin marketplace add lixun910/fsq-spatial-desktop-plugin
 claude plugin install fsq-spatial-desktop@fsq-spatial-desktop-plugin
 ```
 
-Restart Claude Code. The plugin bundles the skill and `.mcp.json`, which
-registers the MCP server at `http://127.0.0.1:7750/mcp`.
+Restart Claude Code to load the skill.
 
 ## Codex
 
@@ -28,12 +26,10 @@ repo's skill directory, in a Codex session:
 $skill-installer install https://github.com/lixun910/fsq-spatial-desktop-plugin/tree/main/.agents/skills/fsq-spatial-desktop
 ```
 
-That copies the skill **and** its `agents/openai.yaml`, which declares the MCP
-dependency at `http://127.0.0.1:7750/mcp` — so Codex wires the server up itself.
 Restart Codex afterwards. (The installer aborts if the skill is already
 installed; remove the existing skill directory first to reinstall.)
 
-If `$skill-installer` isn't available, copy the two files by hand:
+If `$skill-installer` isn't available, copy the skill files by hand:
 
 ```bash
 curl -fsSL --create-dirs -o ~/.agents/skills/fsq-spatial-desktop/SKILL.md https://raw.githubusercontent.com/lixun910/fsq-spatial-desktop-plugin/main/.agents/skills/fsq-spatial-desktop/SKILL.md
@@ -42,15 +38,6 @@ curl -fsSL --create-dirs -o ~/.agents/skills/fsq-spatial-desktop/SKILL.md https:
 ```bash
 curl -fsSL --create-dirs -o ~/.agents/skills/fsq-spatial-desktop/agents/openai.yaml https://raw.githubusercontent.com/lixun910/fsq-spatial-desktop-plugin/main/.agents/skills/fsq-spatial-desktop/agents/openai.yaml
 ```
-
-And if Codex still doesn't register the server from the declared dependency, add
-it directly:
-
-```bash
-codex mcp add fsq-spatial-desktop --url http://127.0.0.1:7750/mcp
-```
-
-Then restart Codex.
 
 ## One command for both clients
 
@@ -62,31 +49,20 @@ curl -fsSL https://raw.githubusercontent.com/lixun910/fsq-spatial-desktop-plugin
 
 Restart the client and prompt, e.g. *"get population distribution of LA using
 FSQ Spatial Desktop."* The skill downloads the installer for your platform,
-installs and launches the app, finds its MCP server, and drives it.
+installs and launches the app, and drives its tools.
 
 ## Layout
 
 ```
-.claude-plugin/marketplace.json                Claude Code marketplace
-plugins/fsq-spatial-desktop/
-  .claude-plugin/plugin.json                   Claude Code plugin manifest
-  .mcp.json                                    Claude: auto-registers the MCP server
-  plugin.json                                  Agent Plugins 1.0.0 manifest
-  mcp.json                                     Agent Plugins: MCP declaration
-  skills/fsq-spatial-desktop/SKILL.md          the skill
-.agents/skills/fsq-spatial-desktop/
-  SKILL.md                                     the skill (Codex copy)
-  agents/openai.yaml                           Codex: MCP dependency + UI metadata
-install.sh                                     installs the skill + MCP for both
+.claude-plugin/marketplace.json                                  Claude Code marketplace
+plugins/fsq-spatial-desktop/.claude-plugin/plugin.json           Claude Code plugin manifest
+plugins/fsq-spatial-desktop/skills/fsq-spatial-desktop/SKILL.md  the skill
+.agents/skills/fsq-spatial-desktop/SKILL.md                      the skill (Codex copy)
+install.sh                                                       installs the skill for both clients
 ```
 
 ## Notes
 
-- **Port:** the manifests pin `7750`, and the skill launches the app with
-  `FSQ_MCP_PORT=7750` so that is correct by construction. That setting is strict —
-  if `7750` is already taken the MCP server won't start; use
-  `FSQ_MCP_PORT_RANGE="7750-7759"` to allow a fallback, and read the port actually
-  bound from `~/.fsq-spatial/mcp.json`.
 - **Updating:** bump `version` in both
   `plugins/fsq-spatial-desktop/.claude-plugin/plugin.json` and
   `plugins/fsq-spatial-desktop/plugin.json`, then users run
