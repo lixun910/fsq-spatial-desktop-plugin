@@ -19,16 +19,21 @@ at `http://127.0.0.1:7750/mcp`.
 
 ## Codex (and other agent-skills clients)
 
-Codex has no plugin marketplace, so install the skill directly:
+Codex has no plugin system, so nothing fetches-and-registers for you — this is
+plain file placement plus one `mcp add`. Two commands:
 
 ```bash
-mkdir -p ~/.agents/skills/fsq-spatial-desktop
-curl -fsSL https://raw.githubusercontent.com/lixun910/fsq-spatial-desktop-plugin/main/.agents/skills/fsq-spatial-desktop/SKILL.md \
-  -o ~/.agents/skills/fsq-spatial-desktop/SKILL.md
+curl -fsSL --create-dirs -o ~/.agents/skills/fsq-spatial-desktop/SKILL.md https://raw.githubusercontent.com/lixun910/fsq-spatial-desktop-plugin/main/.agents/skills/fsq-spatial-desktop/SKILL.md
+```
+
+```bash
 codex mcp add fsq-spatial-desktop http://127.0.0.1:7750/mcp
 ```
 
-## One-liner for both
+Then restart Codex. (The `mcp add` is optional — once the skill is placed, the
+agent runs it itself as Step 5 — but either way you must restart for it to load.)
+
+## One command for both clients
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/lixun910/fsq-spatial-desktop-plugin/main/install.sh | bash
