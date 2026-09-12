@@ -1,0 +1,8 @@
+{
+  "name": "fsq-spatial-desktop",
+  "description": "Install, launch, and connect FSQ Spatial Desktop so this agent can drive its geospatial tools (DuckDB + Kepler.gl maps) over MCP.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Xun Li"
+  }
+}

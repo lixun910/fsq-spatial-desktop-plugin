@@ -1,0 +1,15 @@
+{
+  "name": "fsq-spatial-desktop-plugin",
+  "owner": {
+    "name": "Xun Li",
+    "url": "https://github.com/lixun910"
+  },
+  "description": "Bootstrap skill and MCP connection for FSQ Spatial Desktop.",
+  "plugins": [
+    {
+      "name": "fsq-spatial-desktop",
+      "source": "./plugins/fsq-spatial-desktop",
+      "description": "Install, launch, and connect FSQ Spatial Desktop so this agent can drive its geospatial tools (DuckDB + Kepler.gl maps) over MCP."
+    }
+  ]
+}
