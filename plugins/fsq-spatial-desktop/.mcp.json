@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "fsq-spatial-desktop": {
-      "type": "http",
-      "url": "http://127.0.0.1:7750/mcp"
+      "command": "/bin/sh",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/bin/fsq-spatial-desktop-mcp"]
     }
   }
 }
