@@ -1,0 +1,33 @@
+{
+  "name": "fsq-spatial-desktop",
+  "version": "0.1.3",
+  "description": "Install, launch, and connect FSQ Spatial Desktop so this agent can drive its geospatial tools (DuckDB SQL, Kepler.gl maps, H3 Hub datasets) over MCP.",
+  "author": {
+    "name": "Xun Li"
+  },
+  "keywords": [
+    "geospatial",
+    "duckdb",
+    "kepler",
+    "h3",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json",
+  "interface": {
+    "displayName": "FSQ Spatial Desktop",
+    "shortDescription": "Drive FSQ Spatial Desktop: SQL, maps, H3 Hub",
+    "longDescription": "Connect this agent to a running FSQ Spatial Desktop app. The plugin registers the app's MCP server as a local command, so the tools are the app's own — DuckDB SQL over the project's data, Kepler.gl and deck.gl maps written into a document, and H3 Hub datasets — and ships the bootstrap skill that installs and launches the app when it is not running.",
+    "developerName": "Foursquare",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Get the population distribution of Los Angeles",
+      "Map nighttime lights over Ukraine by year",
+      "Which H3 Hub datasets cover crime in Los Angeles County?"
+    ]
+  }
+}

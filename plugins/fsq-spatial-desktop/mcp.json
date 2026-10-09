@@ -1,11 +1,11 @@
 {
-  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
     "fsq-spatial-desktop": {
-      "type": "stdio",
       "command": "./bin/fsq-spatial-desktop-mcp",
       "args": [],
-      "cwd": "."
+      "cwd": ".",
+      "startup_timeout_sec": 120,
+      "tool_timeout_sec": 1800
     }
   }
 }
