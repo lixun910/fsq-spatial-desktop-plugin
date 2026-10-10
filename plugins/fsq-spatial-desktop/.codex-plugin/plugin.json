@@ -1,6 +1,6 @@
 {
   "name": "fsq-spatial-desktop",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Install, launch, and connect FSQ Spatial Desktop so this agent can drive its geospatial tools (DuckDB SQL, Kepler.gl maps, H3 Hub datasets) over MCP.",
   "author": {
     "name": "Xun Li"
@@ -28,6 +28,8 @@
       "Get the population distribution of Los Angeles",
       "Map nighttime lights over Ukraine by year",
       "Which H3 Hub datasets cover crime in Los Angeles County?"
-    ]
+    ],
+    "logo": "./assets/app-icon.png",
+    "brandColor": "#1D439C"
   }
 }
